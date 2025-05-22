@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphVis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Шапка -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-project-diagram"></i>
+                <h1>GraphVis</h1>
+            </div>
+        </header>
+
+        <!-- Основное содержимое -->
+        <main class="main-content">
+            <!-- Левая панель -->
+            <aside class="left-panel">
+                <div class="section">
+                    <h2>Количество узлов:</h2>
+                    <input type="number" id="node-count" class="input-field" value="0" min="0">
+                </div>
+
+                <div class="section">
+                    <h2>Матрица смежности</h2>
+                    <textarea id="adjacency-matrix" class="matrix-input"
+                        placeholder="Введите матрицу смежности"></textarea>
+                    <div class="matrix-buttons">
+                        <button id="draw-graph" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Готово
+                        </button>
+                        <button id="clear-all" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Очистить всё
+                        </button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Алгоритмы:</h2>
+                    <ul class="algorithms-list">
+                        <li><a href="#" class="algorithm-link">Обход в глубину</a></li>
+                        <li><a href="#" class="algorithm-link">Обход в ширину</a></li>
+                        <li><a href="#" class="algorithm-link">Построение остовного дерева</a></li>
+                        <li><a href="#" class="algorithm-link">Нахождение кратчайшего пути</a></li>
+                        <li><a href="#" class="algorithm-link">Кодирование Профера</a></li>
+                        <li><a href="#" class="algorithm-link">Декодирование Профера</a></li>
+                        <li><a href="#" class="algorithm-link">Раскраска графа</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Центральная область (граф) -->
+            <div class="graph-area">
+                <div id="network"></div>
+            </div>
+
+            <!-- Правая панель -->
+            <aside class="right-panel">
+                <div class="section">
+                    <h2>Свойства графа</h2>
+                    <div class="property">
+                        <span>Количество вершин:</span>
+                        <span id="vertex-count" class="property-value">0</span>
+                    </div>
+                    <div class="property">
+                        <span>Количество ребер:</span>
+                        <span id="edge-count" class="property-value">0</span>
+                    </div>
+                    <div class="property">
+                        <span>Число компонент связности:</span>
+                        <span id="components" class="property-value">0</span>
+                    </div>
+                    <div class="property">
+                        <span>Эйлеров граф:</span>
+                        <span id="is-eulerian" class="property-value">Нет</span>
+                    </div>
+                    <div class="property">
+                        <span>Полуэйлеров граф:</span>
+                        <span id="is-semi-eulerian" class="property-value">Нет</span>
+                    </div>
+                    <div class="property">
+                        <span>Двудольный граф:</span>
+                        <span id="is-bipartite" class="property-value">Нет</span>
+                    </div>
+                    <div class="property">
+                        <span>Полный двудольный:</span>
+                        <span id="is-complete-bipartite" class="property-value">Нет</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Свойства вершины</h2>
+                    <div class="property">
+                        <span>Степень:</span>
+                        <span id="vertex-degree" class="property-value">-</span>
+                    </div>
+                    <div class="property">
+                        <span>Значение:</span>
+                        <span id="vertex-value" class="property-value">-</span>
+                    </div>
+                    <div class="property">
+                        <span>Цвет:</span>
+                        <input type="color" id="vertex-color" value="#4285f4">
+                    </div>
+                    <div class="property">
+                        <span>Радиус:</span>
+                        <input type="range" id="vertex-radius" min="10" max="30" value="15">
+                    </div>
+                    <div class="property">
+                        <span>Размер шрифта:</span>
+                        <input type="range" id="vertex-font-size" min="10" max="24" value="14">
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Свойства ребра</h2>
+                    <div class="property">
+                        <span>Вес:</span>
+                        <input type="number" id="edge-weight" value="1" min="1">
+                    </div>
+                    <div class="property">
+                        <span>Цвет:</span>
+                        <input type="color" id="edge-color" value="#2B7CE9">
+                    </div>
+                    <div class="property">
+                        <span>Толщина:</span>
+                        <input type="range" id="edge-width" min="1" max="10" value="2">
+                    </div>
+                    <div class="property">
+                        <span>Размер шрифта:</span>
+                        <input type="range" id="edge-font-size" min="10" max="24" value="12">
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
